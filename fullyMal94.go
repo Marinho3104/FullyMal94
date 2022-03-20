@@ -1,6 +1,8 @@
 package fullymal94
 
-func FullyMal94(number int) string {
+import "math/big"
+
+func FullyMal94(number *big.Int) string {
 
 	return setFullyMalNumber(number)
 }

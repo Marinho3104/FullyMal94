@@ -1,10 +1,10 @@
 package fullymal94
 
 import (
-	"math"
+	"math/big"
 )
 
-func setFullyMalNumber(number int) string {
+func setFullyMalNumber(number *big.Int) string {
 
 	fullymalNumber := ""
 
@@ -18,22 +18,30 @@ func setFullyMalNumber(number int) string {
 
 	for {
 
-		if number <= 94 {
+		if number.Cmp(big.NewInt(95)) == -1 {
 			break
 		}
 
-		intPart := math.Floor(float64(number) / float64(94))
+		intPart := new(big.Int)
 
-		val := number - (int(intPart) * 94)
+		intPart.Div(number, big.NewInt(94))
 
-		fullymalNumber = letters[val] + fullymalNumber
+		mutlIntPartTo94 := new(big.Int)
 
-		number = int(intPart)
+		mutlIntPartTo94.Mul(intPart, big.NewInt(94))
+
+		val := new(big.Int)
+
+		val.Sub(number, mutlIntPartTo94)
+
+		fullymalNumber = letters[val.Int64()] + fullymalNumber
+
+		number = intPart
 
 	}
 
-	if number != 0 {
-		fullymalNumber = letters[number] + fullymalNumber
+	if number.Cmp(big.NewInt(0)) != 0 {
+		fullymalNumber = letters[number.Int64()] + fullymalNumber
 	}
 
 	return fullymalNumber

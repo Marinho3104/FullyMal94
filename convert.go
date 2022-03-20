@@ -1,8 +1,10 @@
 package fullymal94
 
-import "math"
+import (
+	"math/big"
+)
 
-func Convert(fullymalNumber string) int {
+func Convert(fullymalNumber string) *big.Int {
 
 	letters := []string{}
 
@@ -12,7 +14,7 @@ func Convert(fullymalNumber string) int {
 
 	indexNumbers := []int{}
 
-	numberBase10 := 0
+	numberBase10 := new(big.Int)
 
 	for _, v := range fullymalNumber {
 
@@ -24,13 +26,21 @@ func Convert(fullymalNumber string) int {
 
 	for c := 0; c < len(indexNumbers)-1; c++ {
 
-		numberBase10 += int(math.Pow(float64(94), float64(expCount)) * float64(indexNumbers[c]))
+		_pow := new(big.Int)
+
+		_pow.Exp(big.NewInt(94), big.NewInt(int64(expCount)), nil)
+
+		_mul := new(big.Int)
+
+		_mul.Mul(_pow, big.NewInt(int64(indexNumbers[c])))
+
+		numberBase10.Add(numberBase10, _mul)
 
 		expCount--
 
 	}
 
-	numberBase10 += indexNumbers[len(indexNumbers)-1]
+	numberBase10.Add(numberBase10, big.NewInt(int64(indexNumbers[len(indexNumbers)-1])))
 
 	return numberBase10
 
