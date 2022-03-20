@@ -24,7 +24,7 @@ func Convert(fullymalNumber string) int {
 
 	for c := 0; c < len(indexNumbers)-1; c++ {
 
-		numberBase10 += int(math.Pow(float64(92), float64(expCount)) * float64(indexNumbers[c]))
+		numberBase10 += int(math.Pow(float64(94), float64(expCount)) * float64(indexNumbers[c]))
 
 		expCount--
 

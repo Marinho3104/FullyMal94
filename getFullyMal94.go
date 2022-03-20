@@ -18,13 +18,13 @@ func setFullyMalNumber(number int) string {
 
 	for {
 
-		if number <= 92 {
+		if number <= 94 {
 			break
 		}
 
-		intPart := math.Floor(float64(number) / float64(92))
+		intPart := math.Floor(float64(number) / float64(94))
 
-		val := number - (int(intPart) * 92)
+		val := number - (int(intPart) * 94)
 
 		fullymalNumber = letters[val] + fullymalNumber
 
