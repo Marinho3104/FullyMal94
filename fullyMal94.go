@@ -7,20 +7,20 @@ import (
 )
 
 type FullyMal struct {
-	fullyMalTable []string
-	fullyMal      string
+	FullyMalTable  []string
+	FullyMalRepres string
 }
 
 func (fullyMal *FullyMal) SetTableValue() {
 	for i := 33; i < 127; i++ {
-		fullyMal.fullyMalTable = append(fullyMal.fullyMalTable, string(i))
+		fullyMal.FullyMalTable = append(fullyMal.FullyMalTable, string(i))
 	}
 }
 
 func (fullyMal *FullyMal) FromBytes(_bytes []byte) {
 
-	if len(fullyMal.fullyMalTable) != 94 {
-		fullyMal.fullyMalTable = []string{}
+	if len(fullyMal.FullyMalTable) != 94 {
+		fullyMal.FullyMalTable = []string{}
 
 		fullyMal.SetTableValue()
 	}
@@ -35,8 +35,8 @@ func (fullyMal *FullyMal) FromBytes(_bytes []byte) {
 
 func (fullyMal *FullyMal) ToBytes() []byte {
 
-	if len(fullyMal.fullyMalTable) != 94 {
-		fullyMal.fullyMalTable = []string{}
+	if len(fullyMal.FullyMalTable) != 94 {
+		fullyMal.FullyMalTable = []string{}
 
 		fullyMal.SetTableValue()
 	}
@@ -75,9 +75,9 @@ func (fullymal *FullyMal) ToInt() *big.Int {
 
 	numberBase10 := new(big.Int)
 
-	for _, v := range fullymal.fullyMal {
+	for _, v := range fullymal.FullyMalRepres {
 
-		indexNumbers = append(indexNumbers, getElementIndex(fullymal.fullyMalTable, string(v)))
+		indexNumbers = append(indexNumbers, getElementIndex(fullymal.FullyMalTable, string(v)))
 
 	}
 
@@ -152,7 +152,13 @@ func getElementIndex(letters []string, val string) int {
 
 func (fullyMal *FullyMal) FromInt(number *big.Int) {
 
-	fullyMal.fullyMal = ""
+	if len(fullyMal.FullyMalTable) != 94 {
+		fullyMal.FullyMalTable = []string{}
+
+		fullyMal.SetTableValue()
+	}
+
+	fullyMal.FullyMalRepres = ""
 
 	for {
 
@@ -172,14 +178,14 @@ func (fullyMal *FullyMal) FromInt(number *big.Int) {
 
 		val.Sub(number, mutlIntPartTo94)
 
-		fullyMal.fullyMal = fullyMal.fullyMalTable[val.Int64()] + fullyMal.fullyMal
+		fullyMal.FullyMalRepres = fullyMal.FullyMalTable[val.Int64()] + fullyMal.FullyMalRepres
 
 		number = intPart
 
 	}
 
 	if number.Cmp(big.NewInt(0)) != 0 {
-		fullyMal.fullyMal = fullyMal.fullyMalTable[number.Int64()] + fullyMal.fullyMal
+		fullyMal.FullyMalRepres = fullyMal.FullyMalTable[number.Int64()] + fullyMal.FullyMalRepres
 	}
 
 }
