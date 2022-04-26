@@ -11,13 +11,13 @@ type FullyMal struct {
 	fullyMal      string
 }
 
-func (fullyMal *FullyMal) setTableValue() {
+func (fullyMal *FullyMal) SetTableValue() {
 	for i := 33; i < 127; i++ {
 		fullyMal.fullyMalTable = append(fullyMal.fullyMalTable, string(i))
 	}
 }
 
-func (fullyMal *FullyMal) fromBytes(_bytes []byte) {
+func (fullyMal *FullyMal) FromBytes(_bytes []byte) {
 
 	if len(fullyMal.fullyMalTable) != 94 {
 		fullyMal.fullyMalTable = []string{}
@@ -33,7 +33,7 @@ func (fullyMal *FullyMal) fromBytes(_bytes []byte) {
 
 }
 
-func (fullyMal *FullyMal) toBytes() []byte {
+func (fullyMal *FullyMal) ToBytes() []byte {
 
 	if len(fullyMal.fullyMalTable) != 94 {
 		fullyMal.fullyMalTable = []string{}
@@ -69,7 +69,7 @@ func (fullyMal *FullyMal) toBytes() []byte {
 
 }
 
-func (fullymal *FullyMal) toInt() *big.Int {
+func (fullymal *FullyMal) ToInt() *big.Int {
 
 	indexNumbers := []int{}
 
@@ -105,7 +105,7 @@ func (fullymal *FullyMal) toInt() *big.Int {
 
 }
 
-func (fullyMal *FullyMal) toBinary() string {
+func (fullyMal *FullyMal) ToBinary() string {
 
 	binaryValue := ""
 
@@ -150,7 +150,7 @@ func getElementIndex(letters []string, val string) int {
 	return -1
 }
 
-func (fullyMal *FullyMal) fromInt(number *big.Int) {
+func (fullyMal *FullyMal) FromInt(number *big.Int) {
 
 	fullyMal.fullyMal = ""
 
