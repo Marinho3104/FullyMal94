@@ -22,14 +22,14 @@ func (fullyMal *FullyMal) FromBytes(_bytes []byte) {
 	if len(fullyMal.fullyMalTable) != 94 {
 		fullyMal.fullyMalTable = []string{}
 
-		fullyMal.setTableValue()
+		fullyMal.SetTableValue()
 	}
 
 	valueBigInt := new(big.Int)
 
 	valueBigInt.SetBytes(_bytes)
 
-	fullyMal.fromInt(valueBigInt)
+	fullyMal.FromInt(valueBigInt)
 
 }
 
@@ -38,12 +38,12 @@ func (fullyMal *FullyMal) ToBytes() []byte {
 	if len(fullyMal.fullyMalTable) != 94 {
 		fullyMal.fullyMalTable = []string{}
 
-		fullyMal.setTableValue()
+		fullyMal.SetTableValue()
 	}
 
 	byteArray := []byte{}
 
-	binaryValueCorrect := fullyMal.toBinary()
+	binaryValueCorrect := fullyMal.ToBinary()
 
 	for {
 		if len(binaryValueCorrect)%8 == 0 {
@@ -109,7 +109,7 @@ func (fullyMal *FullyMal) ToBinary() string {
 
 	binaryValue := ""
 
-	decimalNumber := fullyMal.toInt()
+	decimalNumber := fullyMal.ToInt()
 
 	for {
 
