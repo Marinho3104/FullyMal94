@@ -162,7 +162,7 @@ func (fullyMal *FullyMal) FromInt(number *big.Int) {
 
 	for {
 
-		if number.Cmp(big.NewInt(95)) == -1 {
+		if number.Cmp(big.NewInt(94)) == -1 {
 			break
 		}
 
