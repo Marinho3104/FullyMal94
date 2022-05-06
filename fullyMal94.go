@@ -1,7 +1,6 @@
 package fullymal94
 
 import (
-	"fmt"
 	"math/big"
 	"strconv"
 )
@@ -67,7 +66,6 @@ func (fullyMal *FullyMal) ToBytes() []byte {
 		num, err := strconv.ParseUint(binaryValueCorrect[i:i+8], 2, 8)
 
 		if err != nil {
-			fmt.Println(err)
 			return []byte("")
 		}
 
