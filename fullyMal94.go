@@ -17,12 +17,21 @@ func (fullyMal *FullyMal) SetTableValue() {
 	}
 }
 
-func (fullyMal *FullyMal) FromBytes(_bytes []byte) {
-
+func (fullyMal *FullyMal) CheckTable() {
 	if len(fullyMal.FullyMalTable) != 94 {
 		fullyMal.FullyMalTable = []string{}
 
 		fullyMal.SetTableValue()
+	}
+}
+
+func (fullyMal *FullyMal) FromBytes(_bytes []byte) {
+
+	fullyMal.CheckTable()
+
+	if len(_bytes) == 0 {
+		fullyMal.FullyMalRepres = ""
+		return
 	}
 
 	valueBigInt := new(big.Int)
@@ -35,10 +44,10 @@ func (fullyMal *FullyMal) FromBytes(_bytes []byte) {
 
 func (fullyMal *FullyMal) ToBytes() []byte {
 
-	if len(fullyMal.FullyMalTable) != 94 {
-		fullyMal.FullyMalTable = []string{}
+	fullyMal.CheckTable()
 
-		fullyMal.SetTableValue()
+	if fullyMal.FullyMalRepres == "" {
+		return []byte("")
 	}
 
 	byteArray := []byte{}
@@ -71,13 +80,32 @@ func (fullyMal *FullyMal) ToBytes() []byte {
 
 func (fullymal *FullyMal) ToInt() *big.Int {
 
+	posValue := big.NewInt(1)
+
+	fullymal.CheckTable()
+
+	if fullymal.FullyMalRepres[:2] == "- " {
+		posValue = big.NewInt(-1)
+		fullymal.FullyMalRepres = fullymal.FullyMalRepres[2:]
+	}
+
+	if fullymal.FullyMalRepres == "" {
+		return big.NewInt(0)
+	}
+
 	indexNumbers := []int{}
 
 	numberBase10 := new(big.Int)
 
 	for _, v := range fullymal.FullyMalRepres {
 
-		indexNumbers = append(indexNumbers, getElementIndex(fullymal.FullyMalTable, string(v)))
+		elementIndex := getElementIndex(fullymal.FullyMalTable, string(v))
+
+		if elementIndex == -1 {
+			return big.NewInt(0)
+		}
+
+		indexNumbers = append(indexNumbers, elementIndex)
 
 	}
 
@@ -101,15 +129,26 @@ func (fullymal *FullyMal) ToInt() *big.Int {
 
 	numberBase10.Add(numberBase10, big.NewInt(int64(indexNumbers[len(indexNumbers)-1])))
 
+	numberBase10.Mul(numberBase10, posValue)
+
 	return numberBase10
 
 }
 
 func (fullyMal *FullyMal) ToBinary() string {
 
+	fullyMal.CheckTable()
+
 	binaryValue := ""
 
 	decimalNumber := fullyMal.ToInt()
+
+	posValue := ""
+
+	if decimalNumber.Cmp(big.NewInt(0)) == -1 {
+		decimalNumber.Mul(decimalNumber, big.NewInt(-1))
+		posValue = "-"
+	}
 
 	for {
 
@@ -137,6 +176,8 @@ func (fullyMal *FullyMal) ToBinary() string {
 		binaryValueCorrect += string(binaryValue[i])
 	}
 
+	binaryValueCorrect = posValue + binaryValueCorrect
+
 	return binaryValueCorrect
 }
 
@@ -152,11 +193,15 @@ func getElementIndex(letters []string, val string) int {
 
 func (fullyMal *FullyMal) FromInt(number *big.Int) {
 
-	if len(fullyMal.FullyMalTable) != 94 {
-		fullyMal.FullyMalTable = []string{}
+	posValue := ""
 
-		fullyMal.SetTableValue()
+	if number.Cmp(big.NewInt(0)) == -1 {
+		posValue = "- "
+
+		number.Mul(number, big.NewInt(-1))
 	}
+
+	fullyMal.CheckTable()
 
 	fullyMal.FullyMalRepres = ""
 
@@ -187,5 +232,7 @@ func (fullyMal *FullyMal) FromInt(number *big.Int) {
 	if number.Cmp(big.NewInt(0)) != 0 {
 		fullyMal.FullyMalRepres = fullyMal.FullyMalTable[number.Int64()] + fullyMal.FullyMalRepres
 	}
+
+	fullyMal.FullyMalRepres = posValue + fullyMal.FullyMalRepres
 
 }
